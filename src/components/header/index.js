@@ -3,9 +3,9 @@ import {SafeAreaView} from 'react-native';
 
 import CustomHeader from '../custom_headers';
 
-const Header = ({type}) => (
+const Header = ({type, title}) => (
   <SafeAreaView>
-    <CustomHeader type={type} />
+    <CustomHeader title={title} type={type} />
   </SafeAreaView>
 );
 

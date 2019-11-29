@@ -40,4 +40,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingRight: 10,
   },
+  // detail header
+  detailContainer: {
+    backgroundColor: colors.white,
+  },
+  titleContainer: {
+    justifyContent: 'center',
+  },
+  title: {
+    color: colors.titleColorText,
+    fontSize: resize(16),
+    textAlign: 'center',
+  },
+  backIcon: {
+    color: colors.titleColorText,
+  },
+  heart_empty: {
+    color: colors.primaryLight,
+  },
 });

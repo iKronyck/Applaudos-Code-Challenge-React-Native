@@ -16,12 +16,17 @@ export const getAnimes = async (genre = 'adventure') =>
 export const getFirstPageGenres = async () =>
   await dispatchRequest({
     method: 'get',
-    url:
-      'https://kitsu.io/api/edge/genres?page%5Blimit%5D=10&page%5Boffset%5D=0',
+    url: 'genres?page%5Blimit%5D=10&page%5Boffset%5D=0',
   });
 
 export const getPaginatedData = async url =>
   await dispatchRequest({
     method: 'get',
     url,
+  });
+
+export const getGenresForResource = async id =>
+  await dispatchRequest({
+    method: 'get',
+    url: `anime/${id}/genres`,
   });

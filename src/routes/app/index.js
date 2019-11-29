@@ -4,12 +4,14 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 // screens
 import Home from '../../screens/app/Home';
+import DetailData from '../../screens/app/DetailData';
 
 const appStackNavigator = createStackNavigator(
   {
     Home: {
       screen: Home,
     },
+    DetailData,
   },
   {
     initialRouteName: 'Home',

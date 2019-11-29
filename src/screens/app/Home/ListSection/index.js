@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {Container, Thumbnail} from 'native-base';
 import {getAnimes, getPaginatedData} from '../../../../api/kitsu';
-import {FlatList} from 'react-native-gesture-handler';
+import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
+import {withNavigation} from 'react-navigation';
 import styles from './styles';
 
 import ImageNotFound from '../../../../assets/img/img_not_found.png';
@@ -28,7 +30,6 @@ class ListSection extends Component {
         listData: data.data.data,
         nextPage: data.data.links.next,
       });
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +39,6 @@ class ListSection extends Component {
     try {
       const {nextPage, listData} = this.state;
       const data = await getPaginatedData(nextPage);
-      console.log(data, 'NEXT');
       let _state = this.state;
       _state.nextPage = '';
       _state.listData = [...listData, ...data.data.data];
@@ -84,14 +84,23 @@ class ListSection extends Component {
           horizontal
           onEndReachedThreshold={0.8}
           renderItem={({item}) => (
-            <View style={styles.itemContainer}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('DetailData', {detail: item})
+              }
+              style={styles.itemContainer}>
               <View style={styles.imageContainer}>
-                <Thumbnail
-                  square
+                <FastImage
                   style={styles.image}
                   resizeMode="stretch"
                   source={this.validateImage(item.attributes.posterImage)}
                 />
+                {/* <Thumbnail
+                  square
+                  style={styles.image}
+                  resizeMode="stretch"
+                  source={this.validateImage(item.attributes.posterImage)}
+                /> */}
                 <View style={styles.dataTypeContainer}>
                   <Text numberOfLines={2} style={styles.dataTypeText}>
                     {item.type}
@@ -103,7 +112,7 @@ class ListSection extends Component {
                   {item.attributes.canonicalTitle}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -111,4 +120,4 @@ class ListSection extends Component {
   }
 }
 
-export default ListSection;
+export default withNavigation(ListSection);

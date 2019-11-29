@@ -6,7 +6,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 // custom
 import styles from './styles';
 
-const CustomHeader = ({type}) => {
+const CustomHeader = ({type, title}) => {
   if (type === 'search') {
     return (
       <Header style={styles.containerHeaderSearch}>
@@ -38,20 +38,27 @@ const CustomHeader = ({type}) => {
     );
   } else {
     return (
-      <Header
-        androidStatusBarColor={styles.androidStatusBarColor.color}
-        style={{backgroundColor: '#66bb6a'}}>
+      <Header transparent style={styles.detailContainer}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Left>
           <Button transparent>
-            <Icon name="arrow-back" />
+            <Icon style={styles.backIcon} name="arrow-back" />
           </Button>
         </Left>
-        <Body>
-          <Title>Header</Title>
-        </Body>
+        <View style={styles.titleContainer}>
+          <Title style={styles.title}>{title}</Title>
+        </View>
         <Right>
           <Button transparent>
-            <Icon name="menu" />
+            {false ? (
+              <Icon style={styles.heart_empty} type="Ionicons" name="heart" />
+            ) : (
+              <Icon
+                style={styles.backIcon}
+                type="Ionicons"
+                name="heart-empty"
+              />
+            )}
           </Button>
         </Right>
       </Header>
@@ -61,6 +68,7 @@ const CustomHeader = ({type}) => {
 
 CustomHeader.defaultProps = {
   type: 'ordinary',
+  title: 'KHA',
   valueSearch: '',
   data: [],
 };

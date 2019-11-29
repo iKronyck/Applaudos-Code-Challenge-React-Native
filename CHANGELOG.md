@@ -26,3 +26,10 @@
 - Add default image to data card
 - Add pagination to genre and data card screen
 - Change UI of Home screen
+
+## [ADD, CHANGE] 2019-11-29 02:23
+
+- Add detail screen
+- Add moment to project
+- Add FastImage to cache all images
+- Change Image to FastImage component
