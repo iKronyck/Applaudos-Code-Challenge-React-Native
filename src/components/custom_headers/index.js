@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, StatusBar} from 'react-native';
 import {Header, Left, Icon, Button, Right, Title, Body} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -9,13 +9,16 @@ import styles from './styles';
 const CustomHeader = ({type}) => {
   if (type === 'search') {
     return (
-      <Header
-        androidStatusBarColor={styles.androidStatusBarColor.color}
-        style={styles.containerHeaderSearch}>
+      <Header style={styles.containerHeaderSearch}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
         <View style={styles.containerSearch}>
           <View style={styles.containerIcons}>
             <TouchableOpacity style={styles.containerButtonActionSearch}>
-              <Icon type="MaterialIcons" name="search" />
+              <Icon
+                style={styles.colorIcon}
+                type="MaterialIcons"
+                name="search"
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.containerInput}>
@@ -23,7 +26,11 @@ const CustomHeader = ({type}) => {
           </View>
           <View style={styles.containerIcons}>
             <TouchableOpacity style={styles.containerButtonActionClose}>
-              <Icon type="MaterialIcons" name="close" />
+              <Icon
+                style={styles.colorIcon}
+                type="MaterialIcons"
+                name="close"
+              />
             </TouchableOpacity>
           </View>
         </View>

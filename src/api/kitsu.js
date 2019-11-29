@@ -7,8 +7,21 @@ export const getAllCategorys = async () =>
     url: 'categories',
   });
 
-export const getAnimes = async () =>
+export const getAnimes = async (genre = 'adventure') =>
   await dispatchRequest({
     method: 'get',
-    url: 'anime',
+    url: `anime?filter[genres]=${genre}`,
+  });
+
+export const getFirstPageGenres = async () =>
+  await dispatchRequest({
+    method: 'get',
+    url:
+      'https://kitsu.io/api/edge/genres?page%5Blimit%5D=10&page%5Boffset%5D=0',
+  });
+
+export const getPaginatedData = async url =>
+  await dispatchRequest({
+    method: 'get',
+    url,
   });

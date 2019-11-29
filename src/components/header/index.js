@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, View, Image, Animated} from 'react-native';
+import {SafeAreaView} from 'react-native';
 
 import CustomHeader from '../custom_headers';
 

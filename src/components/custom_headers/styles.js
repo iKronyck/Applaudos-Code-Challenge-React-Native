@@ -1,20 +1,22 @@
 import {StyleSheet} from 'react-native';
 import {resize} from '../../utils/styles';
+import colors from '../../utils/colors';
 
 export default StyleSheet.create({
   androidStatusBarColor: {
-    color: '#338a3e',
+    color: 'white',
   },
   containerHeaderSearch: {
-    backgroundColor: '#66bb6a',
+    backgroundColor: 'white',
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 5,
     paddingRight: 5,
   },
   containerSearch: {
-    backgroundColor: 'white',
-    borderRadius: 25,
+    backgroundColor: colors.backgroundSearch,
+    borderRadius: resize(25),
+    height: '100%',
     width: '95%',
     flexDirection: 'row',
   },
@@ -24,8 +26,15 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
   },
+  colorIcon: {
+    color: colors.greyIcon,
+  },
   containerInput: {flex: 7},
-  inputSearch: {paddingLeft: 8},
+  inputSearch: {
+    paddingLeft: resize(8),
+    fontSize: resize(15),
+    color: colors.titleColorText,
+  },
   containerButtonActionClose: {
     height: '100%',
     justifyContent: 'center',
