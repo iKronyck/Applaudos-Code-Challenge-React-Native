@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {Text, View} from 'react-native';
 import {Container, Thumbnail} from 'native-base';
 import {getAnimes, getPaginatedData} from '../../../../api/kitsu';
@@ -9,7 +9,7 @@ import styles from './styles';
 
 import ImageNotFound from '../../../../assets/img/img_not_found.png';
 
-class ListSection extends Component {
+class ListSection extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

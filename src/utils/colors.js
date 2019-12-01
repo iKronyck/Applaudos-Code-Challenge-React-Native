@@ -9,6 +9,11 @@ const colors = {
   backgroundSearch: '#f7f7f7',
   titleColorText: '#2f3a4e',
   colorText: '#737f97',
+  colorDates: '#fdd835',
+  blackRGBA: 'rgba(0,0,0, 0.5)',
+  backgroundBroadcast: '#64dd17',
+  backgroundFinished: '#d50000',
+  backgroundTBA: '#f57f17',
 
   white: '#FFFFFF',
   black: '#000000',

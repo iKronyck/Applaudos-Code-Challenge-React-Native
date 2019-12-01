@@ -33,3 +33,16 @@
 - Add moment to project
 - Add FastImage to cache all images
 - Change Image to FastImage component
+
+## [ADD, CHANGE, FIX, REDESING] 2019-12-01 11:17
+
+- Add status in Detail screen
+- Add star rank in Detail screen
+- Add button to play video in Detail screen
+- Add age rating and number of episodes in Detail screen
+- Add react-native-youtube to project
+- Add moment to format more easy the dates
+- Redesing of Detail screen
+- Fix start and end date in Detail screen
+- Add star rating in Detail screen
+- Add more functions to format data

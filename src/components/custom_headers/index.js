@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, TextInput, StatusBar} from 'react-native';
-import {Header, Left, Icon, Button, Right, Title, Body} from 'native-base';
+import {View, TextInput, StatusBar} from 'react-native';
+import {Header, Icon, Title} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // custom
 import styles from './styles';
 
-const CustomHeader = ({type, title}) => {
+const CustomHeader = ({type, title, onLeft, onRigth}) => {
   if (type === 'search') {
     return (
       <Header style={styles.containerHeaderSearch}>
@@ -38,29 +38,14 @@ const CustomHeader = ({type, title}) => {
     );
   } else {
     return (
-      <Header transparent style={styles.detailContainer}>
+      <Header transparent style={{alignItems: 'center'}}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <Left>
-          <Button transparent>
-            <Icon style={styles.backIcon} name="arrow-back" />
-          </Button>
-        </Left>
-        <View style={styles.titleContainer}>
+        <View style={{flex: 1}}>
+          <Icon style={styles.backIcon} name="arrow-back" />
+        </View>
+        <View style={{flex: 7, paddingRight: 10}}>
           <Title style={styles.title}>{title}</Title>
         </View>
-        <Right>
-          <Button transparent>
-            {false ? (
-              <Icon style={styles.heart_empty} type="Ionicons" name="heart" />
-            ) : (
-              <Icon
-                style={styles.backIcon}
-                type="Ionicons"
-                name="heart-empty"
-              />
-            )}
-          </Button>
-        </Right>
       </Header>
     );
   }
@@ -68,9 +53,11 @@ const CustomHeader = ({type, title}) => {
 
 CustomHeader.defaultProps = {
   type: 'ordinary',
-  title: 'KHA',
+  title: '',
   valueSearch: '',
   data: [],
+  onLeft: () => {},
+  onRigth: () => {},
 };
 
 export default CustomHeader;
