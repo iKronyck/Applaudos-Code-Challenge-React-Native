@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
-import {Container, Content, Button} from 'native-base';
+import {Container, Button, Footer, FooterTab, Icon} from 'native-base';
 import ContentLoader, {Rect} from 'react-content-loader/native';
 
 // custom
@@ -14,6 +14,7 @@ import {
 // api
 import Genres from './Genres';
 import LoadingAnimation from '../../../components/loading_animation';
+import CustomFooter from '../../../components/custom_footer';
 
 class Home extends Component {
   constructor(props) {
@@ -22,11 +23,19 @@ class Home extends Component {
       genres: [],
       nextPage: '',
       isLoading: true,
+      search: '',
     };
   }
 
   componentDidMount = async () => {
     this.callFirstGenres();
+  };
+
+  onChangeInputValue = (value, clear = false) => {
+    const search = clear ? '' : value;
+    this.setState({
+      search,
+    });
   };
 
   callFirstGenres = async () => {
@@ -62,24 +71,31 @@ class Home extends Component {
   loadMoreGenres = () => {
     const {nextPage, genres} = this.state;
     if (nextPage && genres.length) {
-      this.nextPageOfGenres();
+      // this.nextPageOfGenres();
     }
   };
 
   render() {
-    const {genres, isLoading} = this.state;
+    const {genres, isLoading, search} = this.state;
     return (
       <Container>
-        <Header type="search" />
+        <Header
+          searchValue={search}
+          clearSearch={v => this.onChangeInputValue(v, true)}
+          onSearchChange={v => this.onChangeInputValue(v)}
+          type="search"
+        />
         {isLoading ? (
           <LoadingAnimation type="feed" />
         ) : (
           <Genres
             genres={genres}
+            search={search}
             updateData={this.state}
             loadMoreGenres={this.loadMoreGenres}
           />
         )}
+        <CustomFooter />
       </Container>
     );
   }

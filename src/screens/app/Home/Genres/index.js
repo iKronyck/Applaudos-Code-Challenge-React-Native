@@ -16,7 +16,7 @@ class Genres extends Component {
   }
 
   render() {
-    const {genres, loadMoreGenres, updateData} = this.props;
+    const {genres, search, loadMoreGenres, updateData} = this.props;
     return (
       <Container style={styles.container}>
         <FlatList
@@ -26,7 +26,7 @@ class Genres extends Component {
           extraData={updateData}
           onEndReached={() => loadMoreGenres()}
           onEndReachedThreshold={0.8}
-          renderItem={({item}) => <ListSection genre={item} />}
+          renderItem={({item}) => <ListSection search={search} genre={item} />}
         />
       </Container>
     );

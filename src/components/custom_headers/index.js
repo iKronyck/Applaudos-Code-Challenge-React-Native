@@ -6,7 +6,15 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 // custom
 import styles from './styles';
 
-const CustomHeader = ({type, title, onLeft, onRigth}) => {
+const CustomHeader = ({
+  type,
+  title,
+  searchValue,
+  onLeft,
+  onRigth,
+  onSearchChange,
+  clearSearch,
+}) => {
   if (type === 'search') {
     return (
       <Header style={styles.containerHeaderSearch}>
@@ -22,10 +30,17 @@ const CustomHeader = ({type, title, onLeft, onRigth}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.containerInput}>
-            <TextInput style={styles.inputSearch} placeholder="Search" />
+            <TextInput
+              value={searchValue}
+              onChangeText={onSearchChange}
+              style={styles.inputSearch}
+              placeholder="Search"
+            />
           </View>
           <View style={styles.containerIcons}>
-            <TouchableOpacity style={styles.containerButtonActionClose}>
+            <TouchableOpacity
+              onPress={clearSearch}
+              style={styles.containerButtonActionClose}>
               <Icon
                 style={styles.colorIcon}
                 type="MaterialIcons"
@@ -40,9 +55,11 @@ const CustomHeader = ({type, title, onLeft, onRigth}) => {
     return (
       <Header transparent style={{alignItems: 'center'}}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <View style={{flex: 1}}>
+        <TouchableOpacity
+          onPress={onLeft}
+          style={{justifyContent: 'flex-start', paddingRight: 20}}>
           <Icon style={styles.backIcon} name="arrow-back" />
-        </View>
+        </TouchableOpacity>
         <View style={{flex: 7, paddingRight: 10}}>
           <Title style={styles.title}>{title}</Title>
         </View>
@@ -56,8 +73,10 @@ CustomHeader.defaultProps = {
   title: '',
   valueSearch: '',
   data: [],
+  searchValue: '',
   onLeft: () => {},
   onRigth: () => {},
+  onSearchChange: () => {},
 };
 
 export default CustomHeader;

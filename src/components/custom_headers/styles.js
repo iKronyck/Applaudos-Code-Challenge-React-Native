@@ -43,7 +43,7 @@ export default StyleSheet.create({
   // detail header
   title: {
     color: colors.titleColorText,
-    fontSize: resize(16),
+    fontSize: resize(18),
     textAlign: 'center',
   },
   backIcon: {

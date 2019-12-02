@@ -103,7 +103,11 @@ class DetailData extends Component {
     } = detail.attributes;
     return (
       <Container>
-        <Header title={title} type="detail" />
+        <Header
+          onLeft={() => this.props.navigation.goBack()}
+          title={title}
+          type="detail"
+        />
         {isLoading ? (
           <LoadingAnimation type="detail" />
         ) : (

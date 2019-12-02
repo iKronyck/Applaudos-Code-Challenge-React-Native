@@ -30,3 +30,21 @@ export const getGenresForResource = async id =>
     method: 'get',
     url: `anime/${id}/genres`,
   });
+
+export const filterAnime = async (search, genre) =>
+  await dispatchRequest(
+    {
+      method: 'get',
+      url: `anime?filter[text]=${search}&page[limit]=20`,
+    },
+    false,
+  );
+
+export const filterManga = async (search, genre) =>
+  await dispatchRequest(
+    {
+      method: 'get',
+      url: `manga?filter[text]=${search}&page[limit]=20`,
+    },
+    false,
+  );

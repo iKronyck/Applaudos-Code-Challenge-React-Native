@@ -1,7 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import {Text, View} from 'react-native';
 import {Container, Thumbnail} from 'native-base';
-import {getAnimes, getPaginatedData} from '../../../../api/kitsu';
+import {getAnimes, getPaginatedData, filterAnime} from '../../../../api/kitsu';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import {withNavigation} from 'react-navigation';
@@ -25,6 +25,7 @@ class ListSection extends PureComponent {
     const {attributes} = this.props.genre;
     try {
       const genreSearch = attributes.slug;
+      console.log(genreSearch);
       const data = await getAnimes(genreSearch);
       this.setState({
         listData: data.data.data,
@@ -95,12 +96,6 @@ class ListSection extends PureComponent {
                   resizeMode="stretch"
                   source={this.validateImage(item.attributes.posterImage)}
                 />
-                {/* <Thumbnail
-                  square
-                  style={styles.image}
-                  resizeMode="stretch"
-                  source={this.validateImage(item.attributes.posterImage)}
-                /> */}
                 <View style={styles.dataTypeContainer}>
                   <Text numberOfLines={2} style={styles.dataTypeText}>
                     {item.type}

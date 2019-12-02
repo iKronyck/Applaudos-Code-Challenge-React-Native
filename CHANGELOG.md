@@ -46,3 +46,10 @@
 - Fix start and end date in Detail screen
 - Add star rating in Detail screen
 - Add more functions to format data
+
+## [ADD] 2019-12-01 23:47
+
+- Add footer tab
+- Add search screen
+- Add component of type resource
+- Add card item component
