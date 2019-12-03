@@ -8,6 +8,7 @@ const Header = ({
   title,
   searchValue,
   onLeft,
+  onRigth,
   onSearchChange,
   clearSearch,
 }) => (
@@ -17,6 +18,7 @@ const Header = ({
       clearSearch={clearSearch}
       onSearchChange={onSearchChange}
       onLeft={() => onLeft()}
+      onRigth={() => onRigth()}
       title={title}
       type={type}
     />

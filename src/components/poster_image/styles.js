@@ -61,4 +61,24 @@ export default StyleSheet.create({
     width: resize(155),
     marginLeft: resize(15),
   },
+  addIconDelete: {
+    color: colors.backgroundFinished,
+    fontSize: resize(25),
+    paddingRight: resize(5),
+  },
+  addMyFavoritesTextD: {
+    color: colors.backgroundFinished,
+    fontSize: resize(14),
+    paddingLeft: resize(5),
+    fontWeight: 'bold',
+  },
+  addMyFavoritesButtonDelete: {
+    flexDirection: 'row',
+    backgroundColor: colors.blackRGBA,
+    padding: resize(6),
+    marginBottom: resize(10, 'h'),
+    borderRadius: resize(5),
+    width: resize(175),
+    marginLeft: resize(15),
+  },
 });

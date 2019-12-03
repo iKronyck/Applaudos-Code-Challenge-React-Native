@@ -6,7 +6,7 @@
   <item>
     <!-- the app logo, centered horizontally and vertically -->
     <bitmap
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/welcome_final"
         android:gravity="center" />
   </item>
 </layer-list>

@@ -25,10 +25,10 @@ export const getPaginatedData = async url =>
     url,
   });
 
-export const getGenresForResource = async id =>
+export const getGenresForResource = async (id, type) =>
   await dispatchRequest({
     method: 'get',
-    url: `anime/${id}/genres`,
+    url: `${type}/${id}/genres`,
   });
 
 export const filterAnime = async (search, genre) =>

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Text, FlatList} from 'react-native';
+import {Text, FlatList, ScrollView} from 'react-native';
 import {View, Container, Content} from 'native-base';
 import moment from 'moment';
+import {connect} from 'react-redux';
 
 // custom
 import Header from '../../../components/header';
@@ -15,7 +16,10 @@ import styles from './styles';
 
 // api
 import {getGenresForResource} from '../../../api/kitsu';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  ADD_TO_FAVORITES,
+  DELETE_OF_FAVORITES,
+} from '../../../actions/favorites';
 
 class DetailData extends Component {
   constructor(props) {
@@ -25,23 +29,28 @@ class DetailData extends Component {
       title: '',
       genres: [],
       isLoading: true,
+      isFavorite: false,
     };
   }
 
   componentDidMount = async () => {
     const detail = this.props.navigation.getParam('detail', {});
-    const getGenres = await getGenresForResource(detail.id);
+    const getGenres = await getGenresForResource(detail.id, detail.type);
     const genres = getGenres.data.data.map(genre => {
       return {
         id: genre.id,
         name: genre.attributes.name,
       };
     });
-    console.log(detail);
+    let isFavorite = false;
+    if (this.props.favorites.length) {
+      isFavorite = this.props.favorites.some(fav => fav.id == detail.id);
+    }
     this.setState({
       title: detail.attributes.canonicalTitle,
       genres,
       isLoading: false,
+      isFavorite,
     });
   };
 
@@ -84,8 +93,29 @@ class DetailData extends Component {
     }
   };
 
+  addToFavorites = async item => {
+    const {dispatch, favorites} = this.props;
+    favorites.push(item);
+    dispatch({
+      type: ADD_TO_FAVORITES,
+      payload: [...favorites],
+    });
+    this.setState({isFavorite: true});
+  };
+
+  deleteToFavorites = async item => {
+    const {dispatch, favorites} = this.props;
+    const deleteFavorite = favorites.filter(fav => fav.id != item.id);
+    dispatch({
+      type: DELETE_OF_FAVORITES,
+      payload: deleteFavorite,
+    });
+    this.setState({isFavorite: false});
+    console.log(deleteFavorite);
+  };
+
   render() {
-    const {title, genres, isLoading} = this.state;
+    const {title, genres, isLoading, isFavorite} = this.state;
     const detail = this.props.navigation.getParam('detail', {});
     const {
       titles,
@@ -127,8 +157,12 @@ class DetailData extends Component {
               </Text>
             </ScrollView>
             <PosterImage
-              image={this.validateImage(posterImage)}
+              item={detail}
+              isFavorite={isFavorite}
               videoUrl={youtubeVideoId}
+              image={this.validateImage(posterImage)}
+              addToFavorites={() => this.addToFavorites(detail)}
+              deleteToFavorites={() => this.deleteToFavorites(detail)}
             />
             <View style={styles.contentGenres}>
               <FlatList
@@ -155,4 +189,8 @@ class DetailData extends Component {
   }
 }
 
-export default DetailData;
+const mapStateToProps = state => ({
+  favorites: state.favorites.favorites,
+});
+
+export default connect(mapStateToProps)(DetailData);

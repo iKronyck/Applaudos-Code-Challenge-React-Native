@@ -1,11 +1,14 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {resize} from '../../utils/styles';
 import colors from '../../utils/colors';
+
+const {width} = Dimensions.get('screen');
+const widthContainer = width / 3;
 
 export default StyleSheet.create({
   container: {
     paddingHorizontal: resize(2),
-    flex: 1,
+    width: resize(widthContainer),
     paddingBottom: resize(5, 'h'),
     borderRadius: resize(5),
   },

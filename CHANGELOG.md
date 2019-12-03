@@ -53,3 +53,14 @@
 - Add search screen
 - Add component of type resource
 - Add card item component
+
+## [ADD, CHANGE, FIX] 2019-03-12 13:28
+
+- Add favorites screen
+- Add button favorites to Detail screen
+- Add redux persist to project
+- Add icon splash
+- Add icon app
+- Add filter to Favorites screen
+- Change header
+- Fix detail screen when showing a manga

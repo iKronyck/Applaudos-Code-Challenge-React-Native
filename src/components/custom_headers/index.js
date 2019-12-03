@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, TextInput, StatusBar} from 'react-native';
-import {Header, Icon, Title} from 'native-base';
+import {View, TextInput, StatusBar, Text} from 'react-native';
+import {Header, Icon, Title, Left, Body, Right} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // custom
@@ -49,6 +49,27 @@ const CustomHeader = ({
             </TouchableOpacity>
           </View>
         </View>
+      </Header>
+    );
+  } else if (type === 'favorites') {
+    return (
+      <Header noLeft style={{alignItems: 'center', backgroundColor: 'white'}}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <Left />
+        <Body>
+          <Title style={styles.title}>{title}</Title>
+        </Body>
+        <Right>
+          <TouchableOpacity
+            onPress={onRigth}
+            style={{justifyContent: 'flex-start', paddingRight: 20}}>
+            <Icon
+              type="MaterialIcons"
+              style={styles.backIcon}
+              name="filter-list"
+            />
+          </TouchableOpacity>
+        </Right>
       </Header>
     );
   } else {
