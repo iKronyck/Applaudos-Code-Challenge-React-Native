@@ -8,6 +8,7 @@ import {withNavigation} from 'react-navigation';
 import styles from './styles';
 
 import ImageNotFound from '../../../../assets/img/img_not_found.png';
+import CardItem from '../../../../components/card_item';
 
 class ListSection extends PureComponent {
   constructor(props) {
@@ -21,12 +22,19 @@ class ListSection extends PureComponent {
     this.getSectionData();
   };
 
+  componentDidUpdate = async (prevProps, prevState) => {
+    console.log(prevProps.activeAnime, this.props.activeAnime);
+    if (prevProps.activeAnime !== this.props.activeAnime) {
+      this.getSectionData();
+    }
+  };
+
   getSectionData = async () => {
     const {attributes} = this.props.genre;
     try {
       const genreSearch = attributes.slug;
-      console.log(genreSearch);
-      const data = await getAnimes(genreSearch);
+      const type = this.props.activeAnime ? 'anime' : 'manga';
+      const data = await getAnimes(genreSearch, type);
       this.setState({
         listData: data.data.data,
         nextPage: data.data.links.next,
@@ -69,7 +77,7 @@ class ListSection extends PureComponent {
 
   render() {
     const {listData} = this.state;
-    const {attributes} = this.props.genre;
+    const {attributes, navigation} = this.props.genre;
     return (
       <View style={styles.container}>
         <Text style={styles.sectionText}>
@@ -85,29 +93,13 @@ class ListSection extends PureComponent {
           horizontal
           onEndReachedThreshold={0.8}
           renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('DetailData', {detail: item})
+            <CardItem
+              goToDetail={() =>
+                navigation.navigate('DetailData', {detail: item})
               }
-              style={styles.itemContainer}>
-              <View style={styles.imageContainer}>
-                <FastImage
-                  style={styles.image}
-                  resizeMode="stretch"
-                  source={this.validateImage(item.attributes.posterImage)}
-                />
-                <View style={styles.dataTypeContainer}>
-                  <Text numberOfLines={2} style={styles.dataTypeText}>
-                    {item.type}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.textTitleContainer}>
-                <Text style={styles.textTitle} numberOfLines={3}>
-                  {item.attributes.canonicalTitle}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              data={item}
+              image={this.validateImage(item.attributes.posterImage)}
+            />
           )}
         />
       </View>

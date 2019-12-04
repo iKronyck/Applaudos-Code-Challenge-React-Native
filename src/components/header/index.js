@@ -11,14 +11,20 @@ const Header = ({
   onRigth,
   onSearchChange,
   clearSearch,
+  showManga,
+  showAnime,
+  segmentActive,
 }) => (
   <SafeAreaView>
     <CustomHeader
       searchValue={searchValue}
       clearSearch={clearSearch}
       onSearchChange={onSearchChange}
+      segmentActive={segmentActive}
       onLeft={() => onLeft()}
       onRigth={() => onRigth()}
+      showAnime={showAnime}
+      showManga={showManga}
       title={title}
       type={type}
     />

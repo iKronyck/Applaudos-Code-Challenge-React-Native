@@ -6,7 +6,7 @@ import styles from './styles';
 import TextAnimeManga from '../text_anime_manga';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-export default function CardItem({data, goToDetail}) {
+export default function CardItem({data, goToDetail, image}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={goToDetail}>
@@ -14,9 +14,7 @@ export default function CardItem({data, goToDetail}) {
           imageStyle={styles.imageStyle}
           resizeMode="stretch"
           style={styles.imageBackGround}
-          source={{
-            uri: data.attributes.posterImage.original,
-          }}>
+          source={image}>
           <View style={styles.textType}>
             <TextAnimeManga text={data.type} />
           </View>

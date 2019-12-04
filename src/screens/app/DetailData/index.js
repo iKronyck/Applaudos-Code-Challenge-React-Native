@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, FlatList, ScrollView} from 'react-native';
-import {View, Container, Content} from 'native-base';
+import {View, Container, Content, List, ListItem} from 'native-base';
 import moment from 'moment';
 import {connect} from 'react-redux';
 
@@ -15,11 +15,19 @@ import LoadingAnimation from '../../../components/loading_animation';
 import styles from './styles';
 
 // api
-import {getGenresForResource} from '../../../api/kitsu';
+import {
+  getGenresForResource,
+  getEpisodesForSerie,
+  getPaginatedData,
+} from '../../../api/kitsu';
 import {
   ADD_TO_FAVORITES,
   DELETE_OF_FAVORITES,
 } from '../../../actions/favorites';
+import EpisodeItem from '../../../components/episode_item';
+import ErrorScreen from '../../../components/error_screen';
+import EmptyList from '../../../components/empty_list';
+import verifyNetworkConnection from '../../../utils/verifyNetworkConnection';
 
 class DetailData extends Component {
   constructor(props) {
@@ -28,30 +36,54 @@ class DetailData extends Component {
       data: [],
       title: '',
       genres: [],
+      episodes: [],
       isLoading: true,
       isFavorite: false,
+      nextPageEpisodes: '',
+      showError: false,
     };
   }
 
   componentDidMount = async () => {
-    const detail = this.props.navigation.getParam('detail', {});
-    const getGenres = await getGenresForResource(detail.id, detail.type);
-    const genres = getGenres.data.data.map(genre => {
-      return {
-        id: genre.id,
-        name: genre.attributes.name,
-      };
-    });
-    let isFavorite = false;
-    if (this.props.favorites.length) {
-      isFavorite = this.props.favorites.some(fav => fav.id == detail.id);
+    this.callData();
+  };
+
+  callData = async () => {
+    try {
+      await verifyNetworkConnection();
+      const detail = this.props.navigation.getParam('detail', {});
+      const getGenres = await getGenresForResource(detail.id, detail.type);
+      let episodes = [];
+      let nextPageEpisodes = '';
+      if (detail.type === 'anime') {
+        episodes = await getEpisodesForSerie(detail.id, detail.type);
+        if (episodes.data.links.hasOwnProperty('next')) {
+          nextPageEpisodes = episodes.data.links.next;
+        }
+        episodes = episodes.data.data;
+      }
+      const genres = getGenres.data.data.map(genre => {
+        return {
+          id: genre.id,
+          name: genre.attributes.name,
+        };
+      });
+      let isFavorite = false;
+      if (this.props.favorites.length) {
+        isFavorite = this.props.favorites.some(fav => fav.id == detail.id);
+      }
+      this.setState({
+        title: detail.attributes.canonicalTitle,
+        genres,
+        isLoading: false,
+        isFavorite,
+        episodes,
+        nextPageEpisodes,
+        showError: false,
+      });
+    } catch (error) {
+      this.setState({showError: true});
     }
-    this.setState({
-      title: detail.attributes.canonicalTitle,
-      genres,
-      isLoading: false,
-      isFavorite,
-    });
   };
 
   validateImage = image => {
@@ -72,7 +104,7 @@ class DetailData extends Component {
       })[0];
       return title[key];
     }
-    return 'Nel';
+    return 'No title';
   };
 
   showYear = data => {
@@ -111,11 +143,49 @@ class DetailData extends Component {
       payload: deleteFavorite,
     });
     this.setState({isFavorite: false});
-    console.log(deleteFavorite);
+  };
+
+  loadMoreData = () => {
+    const {nextPageEpisodes, episodes} = this.state;
+    if (nextPageEpisodes && episodes.length) {
+      this.nextPageOfSectionData();
+    }
+  };
+
+  nextPageOfSectionData = async () => {
+    try {
+      const {nextPageEpisodes, episodes} = this.state;
+      const data = await getPaginatedData(nextPageEpisodes);
+      let _state = this.state;
+      _state.nextPageEpisodes = '';
+      _state.listData = [...episodes, ...data.data.data];
+      if (data.data.links.hasOwnProperty('next')) {
+        _state.nextPageEpisodes = data.data.links.next;
+      }
+      this.setState({_state});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  ageRatingText = (ageRatingGuide, ageRating) => {
+    if (ageRatingGuide || ageRating) {
+      return (
+        <Text style={styles.ageRating}>{ageRatingGuide || ageRating}</Text>
+      );
+    }
+    return null;
   };
 
   render() {
-    const {title, genres, isLoading, isFavorite} = this.state;
+    const {
+      title,
+      genres,
+      isLoading,
+      isFavorite,
+      episodes,
+      showError,
+    } = this.state;
     const detail = this.props.navigation.getParam('detail', {});
     const {
       titles,
@@ -132,59 +202,95 @@ class DetailData extends Component {
       averageRating,
     } = detail.attributes;
     return (
-      <Container>
-        <Header
-          onLeft={() => this.props.navigation.goBack()}
-          title={title}
-          type="detail"
-        />
-        {isLoading ? (
-          <LoadingAnimation type="detail" />
-        ) : (
-          <Content style={styles.content}>
-            <Text style={styles.titleHeader}>{this.getDataTitle(titles)}</Text>
-            <YearReleasedAndFinshied
-              releasedYear={startDate}
-              finishedYear={endDate}
-            />
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <AiringStatus status={status} />
-              <Text style={styles.ageRating}>
-                {ageRatingGuide || ageRating}
+      <ErrorScreen
+        onBack={() => this.props.navigation.goBack()}
+        onReload={() => this.callData()}
+        forUpdate={this.state}
+        showError={showError}>
+        <Container>
+          <Header
+            onLeft={() => this.props.navigation.goBack()}
+            title={title}
+            type="detail"
+          />
+          {isLoading ? (
+            <LoadingAnimation type="detail" />
+          ) : (
+            <Content style={styles.content}>
+              <Text style={styles.titleHeader}>
+                {this.getDataTitle(titles)}
               </Text>
-              <Text style={styles.episodes}>
-                {this.validateStringEpisodes(episodeCount)}
-              </Text>
-            </ScrollView>
-            <PosterImage
-              item={detail}
-              isFavorite={isFavorite}
-              videoUrl={youtubeVideoId}
-              image={this.validateImage(posterImage)}
-              addToFavorites={() => this.addToFavorites(detail)}
-              deleteToFavorites={() => this.deleteToFavorites(detail)}
-            />
-            <View style={styles.contentGenres}>
-              <FlatList
-                data={genres}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
-                  return (
-                    <Text style={styles.genres} key={item.id}>
-                      {item.name}
-                    </Text>
-                  );
-                }}
+              <YearReleasedAndFinshied
+                releasedYear={startDate}
+                finishedYear={endDate}
               />
-            </View>
-            <StarRating rating={averageRating} userCount={userCount} />
-            <View style={styles.synopsis}>
-              <Text>{synopsis}</Text>
-            </View>
-          </Content>
-        )}
-      </Container>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <AiringStatus status={status} />
+                {this.ageRatingText()}
+                <Text style={styles.episodes}>
+                  {this.validateStringEpisodes(episodeCount)}
+                </Text>
+              </ScrollView>
+              <PosterImage
+                item={detail}
+                isFavorite={isFavorite}
+                videoUrl={youtubeVideoId}
+                image={this.validateImage(posterImage)}
+                addToFavorites={() => this.addToFavorites(detail)}
+                deleteToFavorites={() => this.deleteToFavorites(detail)}
+              />
+              <View style={styles.contentGenres}>
+                <FlatList
+                  data={genres}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item}) => {
+                    return (
+                      <Text style={styles.genres} key={item.id}>
+                        {item.name}
+                      </Text>
+                    );
+                  }}
+                />
+              </View>
+              <StarRating rating={averageRating} userCount={userCount} />
+              <View style={styles.synopsis}>
+                <Text>{synopsis}</Text>
+              </View>
+              {detail.type === 'anime' && (
+                <List>
+                  <Text style={styles.titleHeader}>List of Episodes:</Text>
+                  <FlatList
+                    data={episodes}
+                    extraData={this.state}
+                    onEndReachedThreshold={0.8}
+                    initialNumToRender={10}
+                    onEndReached={() => this.loadMoreData()}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({item, index}) => {
+                      if (item.attributes.canonicalTitle) {
+                        return <EpisodeItem item={item} />;
+                      } else if (index === 0) {
+                        return (
+                          <View style={{paddingVertical: 10}}>
+                            <EmptyList text="Are no episodes to show" />
+                          </View>
+                        );
+                      }
+                      return null;
+                    }}
+                    ListEmptyComponent={
+                      <View style={{paddingVertical: 10}}>
+                        <EmptyList text="Are no episodes to show" />
+                      </View>
+                    }
+                  />
+                </List>
+              )}
+            </Content>
+          )}
+        </Container>
+      </ErrorScreen>
     );
   }
 }

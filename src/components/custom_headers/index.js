@@ -1,6 +1,17 @@
 import React from 'react';
 import {View, TextInput, StatusBar, Text} from 'react-native';
-import {Header, Icon, Title, Left, Body, Right} from 'native-base';
+import {
+  Header,
+  Icon,
+  Title,
+  Left,
+  Body,
+  Right,
+  Segment,
+  Button,
+  Content,
+  Container,
+} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // custom
@@ -14,6 +25,9 @@ const CustomHeader = ({
   onRigth,
   onSearchChange,
   clearSearch,
+  showAnime,
+  showManga,
+  segmentActive,
 }) => {
   if (type === 'search') {
     return (
@@ -72,6 +86,58 @@ const CustomHeader = ({
         </Right>
       </Header>
     );
+  } else if (type === 'home') {
+    const {
+      buttonActive,
+      textActive,
+      iconActive,
+      buttonInactive,
+      textInactive,
+      iconInactive,
+    } = styles;
+    return (
+      <Header style={styles.headerHome} hasSegment>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <Left />
+        <Body>
+          <Segment style={{backgroundColor: 'white', marginLeft: 40}}>
+            <Button
+              onPress={showAnime}
+              style={[
+                styles.buttonLeftSegment,
+                segmentActive ? buttonInactive : buttonActive,
+              ]}
+              active={segmentActive}
+              first>
+              <Icon
+                style={segmentActive ? iconInactive : iconActive}
+                name="tv"
+              />
+              <Text style={segmentActive ? textInactive : textActive}>
+                Anime
+              </Text>
+            </Button>
+            <Button
+              onPress={showManga}
+              style={[
+                styles.buttonRightSegment,
+                segmentActive ? buttonActive : buttonInactive,
+              ]}
+              active={!segmentActive}
+              last>
+              <Icon
+                style={segmentActive ? iconActive : iconInactive}
+                name="book"
+              />
+              <Text style={segmentActive ? textActive : textInactive}>
+                Manga
+              </Text>
+            </Button>
+          </Segment>
+        </Body>
+        <Right />
+      </Header>
+    );
   } else {
     return (
       <Header transparent style={{alignItems: 'center'}}>
@@ -98,6 +164,8 @@ CustomHeader.defaultProps = {
   onLeft: () => {},
   onRigth: () => {},
   onSearchChange: () => {},
+  showAnime: () => {},
+  showManga: () => {},
 };
 
 export default CustomHeader;

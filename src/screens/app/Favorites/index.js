@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import CustomFooter from '../../../components/custom_footer';
 import Header from '../../../components/header';
 import {connect} from 'react-redux';
@@ -8,6 +8,8 @@ import {Container, ActionSheet} from 'native-base';
 
 // custom
 import styles from './styles';
+import EmptyList from '../../../components/empty_list';
+import ImageNotFound from '../../../assets/img/img_not_found.png';
 
 var BUTTONS = [
   {text: 'Manga', icon: 'book', iconColor: styles.colorIcon.color},
@@ -61,6 +63,14 @@ function Favorites(props) {
     setMyFavorites(favorites);
   }
 
+  function validateImage(image) {
+    if (image && image.hasOwnProperty('original')) {
+      return {uri: image.original};
+    } else {
+      return ImageNotFound;
+    }
+  }
+
   return (
     <Container>
       <Header
@@ -75,10 +85,12 @@ function Favorites(props) {
         showsVerticalScrollIndicator={false}
         data={myFavorites}
         numColumns={3}
+        ListEmptyComponent={() => <EmptyList text="You don't have favorites" />}
         renderItem={({item}) => (
           <CardItem
             goToDetail={() => navigation.navigate('DetailData', {detail: item})}
             data={item}
+            image={validateImage(item.attributes.posterImage)}
           />
         )}
       />

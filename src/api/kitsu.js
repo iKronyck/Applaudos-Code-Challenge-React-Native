@@ -7,10 +7,10 @@ export const getAllCategorys = async () =>
     url: 'categories',
   });
 
-export const getAnimes = async (genre = 'adventure') =>
+export const getAnimes = async (genre = 'adventure', type = 'anime') =>
   await dispatchRequest({
     method: 'get',
-    url: `anime?filter[genres]=${genre}`,
+    url: `${type}?filter[genres]=${genre}`,
   });
 
 export const getFirstPageGenres = async () =>
@@ -29,6 +29,12 @@ export const getGenresForResource = async (id, type) =>
   await dispatchRequest({
     method: 'get',
     url: `${type}/${id}/genres`,
+  });
+
+export const getEpisodesForSerie = async (id, type) =>
+  await dispatchRequest({
+    method: 'get',
+    url: `https://kitsu.io/api/edge/${type}/${id}/episodes?page%5Blimit%5D=10&page%5Boffset%5D=0`,
   });
 
 export const filterAnime = async (search, genre) =>

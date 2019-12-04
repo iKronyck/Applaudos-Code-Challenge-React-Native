@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {Text, ImageBackground, View} from 'react-native';
 import CustomFooter from '../../../components/custom_footer';
 import Header from '../../../components/header';
-import {Container} from 'native-base';
+import {Container, Icon} from 'native-base';
 import {FlatList} from 'react-native-gesture-handler';
 
 import styles from './styles';
+import ErrorScreen from '../../../components/error_screen';
 
 // api
 import {filterAnime, filterManga, getPaginatedData} from '../../../api/kitsu';
@@ -19,19 +20,22 @@ class Search extends Component {
       search: '',
       nextAnime: '',
       nextManga: '',
+      showError: false,
     };
   }
 
   onChangeValue = (value, clear = false) => {
     const search = clear ? '' : value;
-    if (value.trim()) {
-      this.setState({
-        search,
-      });
-    }
+    this.setState({
+      search,
+    });
   };
 
   componentDidUpdate = async (prevProps, prevState) => {
+    this.callData(prevState);
+  };
+
+  callData = async prevState => {
     try {
       const {search} = this.state;
       if (search && search !== prevState.search) {
@@ -44,9 +48,13 @@ class Search extends Component {
           listData,
           nextAnime: anime.data.links.next,
           nextManga: manga.data.links.next,
+          showError: false,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      this.setState({showError: true});
+    }
   };
 
   nextPageOfSectionData = async () => {
@@ -54,7 +62,6 @@ class Search extends Component {
       const {nextAnime, nextManga, listData} = this.state;
       const anime = await getPaginatedData(nextAnime);
       const manga = await getPaginatedData(nextManga);
-      console.log('traigo');
       let _state = this.state;
       _state.nextAnime = '';
       // _state.nextManga = '';
@@ -82,34 +89,51 @@ class Search extends Component {
   };
 
   render() {
-    const {listData, search} = this.state;
+    const {listData, search, showError} = this.state;
     const {navigate} = this.props.navigation;
     return (
-      <Container>
-        <Header
-          type="search"
-          onSearchChange={v => this.onChangeValue(v)}
-          clearSearch={v => this.onChangeValue(v, true)}
-          searchValue={search}
-        />
-        <FlatList
-          keyExtractor={i => i.id.toString()}
-          initialNumToRender={40}
-          extraData={this.state}
-          // onEndReached={() => this.loadMoreData()}
-          showsVerticalScrollIndicator={false}
-          onEndReachedThreshold={0.8}
-          data={listData}
-          numColumns={3}
-          renderItem={({item}) => (
-            <CardItem
-              goToDetail={() => navigate('DetailData', {detail: item})}
-              data={item}
-            />
+      <ErrorScreen
+        onBack={() => this.props.navigation.goBack()}
+        onReload={() => this.setState({showError: false})}
+        forUpdate={this.state}
+        showError={showError}>
+        <Container>
+          <Header
+            type="search"
+            onSearchChange={v => this.onChangeValue(v)}
+            clearSearch={v => this.onChangeValue(v, true)}
+            searchValue={search}
+          />
+          {search === '' && listData.length === 0 && (
+            <View style={{alignItems: 'center', paddingTop: 40}}>
+              <Text style={styles.textSearch}>Type to search series</Text>
+              <Icon
+                style={styles.iconStyle}
+                type="MaterialIcons"
+                name="tag-faces"
+              />
+            </View>
           )}
-        />
-        <CustomFooter active="search" />
-      </Container>
+          <FlatList
+            style={styles.list}
+            keyExtractor={i => i.id.toString()}
+            initialNumToRender={40}
+            extraData={this.state}
+            // onEndReached={() => this.loadMoreData()}
+            showsVerticalScrollIndicator={false}
+            onEndReachedThreshold={0.8}
+            data={listData}
+            numColumns={3}
+            renderItem={({item}) => (
+              <CardItem
+                goToDetail={() => navigate('DetailData', {detail: item})}
+                data={item}
+              />
+            )}
+          />
+          <CustomFooter active="search" />
+        </Container>
+      </ErrorScreen>
     );
   }
 }

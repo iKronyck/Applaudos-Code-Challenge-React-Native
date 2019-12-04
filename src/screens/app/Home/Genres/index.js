@@ -16,7 +16,13 @@ class Genres extends Component {
   }
 
   render() {
-    const {genres, search, loadMoreGenres, updateData} = this.props;
+    const {
+      genres,
+      search,
+      loadMoreGenres,
+      updateData,
+      activeAnime,
+    } = this.props;
     return (
       <Container style={styles.container}>
         <FlatList
@@ -25,8 +31,15 @@ class Genres extends Component {
           initialNumToRender={10}
           extraData={updateData}
           onEndReached={() => loadMoreGenres()}
-          onEndReachedThreshold={0.8}
-          renderItem={({item}) => <ListSection search={search} genre={item} />}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => (
+            <ListSection
+              activeAnime={activeAnime}
+              search={search}
+              genre={item}
+            />
+          )}
         />
       </Container>
     );
