@@ -1,8 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {Icon} from 'native-base';
-
-// custom
 import styles from './styles.js';
 
 function StartRating({rating, userCount}) {

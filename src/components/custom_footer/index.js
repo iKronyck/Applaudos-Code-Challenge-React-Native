@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Footer, FooterTab, Button, Icon, Text} from 'native-base';
 import {withNavigation} from 'react-navigation';
 

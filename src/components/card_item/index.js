@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text, ImageBackground} from 'react-native';
-import {Container} from 'native-base';
 
 import styles from './styles';
 import TextAnimeManga from '../text_anime_manga';

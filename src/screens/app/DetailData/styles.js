@@ -18,6 +18,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     color: colors.titleColorText,
   },
+  notEpisodes: {paddingVertical: resize(10)},
   titleInfo: {
     fontSize: resize(13),
     color: colors.colorText,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ContentLoader, {Rect} from 'react-content-loader/native';
 import styles from './styles';
 import {Container} from 'native-base';

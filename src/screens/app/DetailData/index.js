@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, FlatList, ScrollView} from 'react-native';
-import {View, Container, Content, List, ListItem} from 'native-base';
+import {View, Container, Content, List} from 'native-base';
 import moment from 'moment';
 import {connect} from 'react-redux';
 
@@ -192,8 +192,6 @@ class DetailData extends Component {
       startDate,
       endDate,
       status,
-      ageRating,
-      ageRatingGuide,
       episodeCount,
       posterImage,
       youtubeVideoId,
@@ -272,7 +270,7 @@ class DetailData extends Component {
                         return <EpisodeItem item={item} />;
                       } else if (index === 0) {
                         return (
-                          <View style={{paddingVertical: 10}}>
+                          <View style={styles.notEpisodes}>
                             <EmptyList text="Are no episodes to show" />
                           </View>
                         );
@@ -280,7 +278,7 @@ class DetailData extends Component {
                       return null;
                     }}
                     ListEmptyComponent={
-                      <View style={{paddingVertical: 10}}>
+                      <View style={styles.notEpisodes}>
                         <EmptyList text="Are no episodes to show" />
                       </View>
                     }

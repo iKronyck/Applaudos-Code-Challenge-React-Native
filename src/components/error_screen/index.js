@@ -1,5 +1,5 @@
-import React, {useState, Component} from 'react';
-import {View, Text, ImageBackground} from 'react-native';
+import React from 'react';
+import {Text, ImageBackground} from 'react-native';
 import {Container, Button, Icon} from 'native-base';
 
 // custom

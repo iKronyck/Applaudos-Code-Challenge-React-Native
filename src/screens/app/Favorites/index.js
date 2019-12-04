@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList} from 'react-native';
 import CustomFooter from '../../../components/custom_footer';
 import Header from '../../../components/header';
 import {connect} from 'react-redux';

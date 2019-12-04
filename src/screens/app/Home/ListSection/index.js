@@ -1,9 +1,7 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {Text, View} from 'react-native';
-import {Container, Thumbnail} from 'native-base';
-import {getAnimes, getPaginatedData, filterAnime} from '../../../../api/kitsu';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import FastImage from 'react-native-fast-image';
+import {getAnimes, getPaginatedData} from '../../../../api/kitsu';
+import {FlatList} from 'react-native-gesture-handler';
 import {withNavigation} from 'react-navigation';
 import styles from './styles';
 
@@ -23,7 +21,6 @@ class ListSection extends PureComponent {
   };
 
   componentDidUpdate = async (prevProps, prevState) => {
-    console.log(prevProps.activeAnime, this.props.activeAnime);
     if (prevProps.activeAnime !== this.props.activeAnime) {
       this.getSectionData();
     }
@@ -95,7 +92,7 @@ class ListSection extends PureComponent {
           renderItem={({item}) => (
             <CardItem
               goToDetail={() =>
-                navigation.navigate('DetailData', {detail: item})
+                this.props.navigation.navigate('DetailData', {detail: item})
               }
               data={item}
               image={this.validateImage(item.attributes.posterImage)}

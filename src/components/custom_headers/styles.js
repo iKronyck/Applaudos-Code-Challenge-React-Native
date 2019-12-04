@@ -92,4 +92,10 @@ export default StyleSheet.create({
     fontSize: resize(16),
     color: colors.titleColorText,
   },
+  segmentStyle: {backgroundColor: colors.white, marginLeft: resize(40)},
+  favoritesHeader: {alignItems: 'center', backgroundColor: colors.white},
+  buttonFilter: {justifyContent: 'flex-start', paddingRight: resize(20)},
+  ordinaryHeader: {alignItems: 'center', backgroundColor: colors.white},
+  leftOrdinary: {justifyContent: 'flex-start', paddingRight: resize(20)},
+  titleLeftContainer: {flex: 7, paddingRight: resize(10)},
 });

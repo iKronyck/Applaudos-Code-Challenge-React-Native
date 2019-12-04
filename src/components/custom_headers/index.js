@@ -9,8 +9,6 @@ import {
   Right,
   Segment,
   Button,
-  Content,
-  Container,
 } from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -67,16 +65,14 @@ const CustomHeader = ({
     );
   } else if (type === 'favorites') {
     return (
-      <Header noLeft style={{alignItems: 'center', backgroundColor: 'white'}}>
+      <Header noLeft style={styles.favoritesHeader}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Left />
         <Body>
           <Title style={styles.title}>{title}</Title>
         </Body>
         <Right>
-          <TouchableOpacity
-            onPress={onRigth}
-            style={{justifyContent: 'flex-start', paddingRight: 20}}>
+          <TouchableOpacity onPress={onRigth} style={styles.buttonFilter}>
             <Icon
               type="MaterialIcons"
               style={styles.backIcon}
@@ -100,20 +96,20 @@ const CustomHeader = ({
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Left />
         <Body>
-          <Segment style={{backgroundColor: 'white', marginLeft: 40}}>
+          <Segment style={styles.segmentStyle}>
             <Button
               onPress={showAnime}
               style={[
                 styles.buttonLeftSegment,
-                segmentActive ? buttonInactive : buttonActive,
+                segmentActive ? buttonActive : buttonInactive,
               ]}
               active={segmentActive}
               first>
               <Icon
-                style={segmentActive ? iconInactive : iconActive}
+                style={segmentActive ? iconActive : iconInactive}
                 name="tv"
               />
-              <Text style={segmentActive ? textInactive : textActive}>
+              <Text style={segmentActive ? textActive : textInactive}>
                 Anime
               </Text>
             </Button>
@@ -121,15 +117,15 @@ const CustomHeader = ({
               onPress={showManga}
               style={[
                 styles.buttonRightSegment,
-                segmentActive ? buttonActive : buttonInactive,
+                segmentActive ? buttonInactive : buttonActive,
               ]}
               active={!segmentActive}
               last>
               <Icon
-                style={segmentActive ? iconActive : iconInactive}
+                style={segmentActive ? iconInactive : iconActive}
                 name="book"
               />
-              <Text style={segmentActive ? textActive : textInactive}>
+              <Text style={segmentActive ? textInactive : textActive}>
                 Manga
               </Text>
             </Button>
@@ -140,14 +136,12 @@ const CustomHeader = ({
     );
   } else {
     return (
-      <Header transparent style={{alignItems: 'center'}}>
+      <Header style={styles.ordinaryHeader}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <TouchableOpacity
-          onPress={onLeft}
-          style={{justifyContent: 'flex-start', paddingRight: 20}}>
+        <TouchableOpacity onPress={onLeft} style={styles.leftOrdinary}>
           <Icon style={styles.backIcon} name="arrow-back" />
         </TouchableOpacity>
-        <View style={{flex: 7, paddingRight: 10}}>
+        <View style={styles.titleLeftContainer}>
           <Title style={styles.title}>{title}</Title>
         </View>
       </Header>

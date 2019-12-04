@@ -7,6 +7,7 @@ import {FlatList} from 'react-native-gesture-handler';
 
 import styles from './styles';
 import ErrorScreen from '../../../components/error_screen';
+import ImageNotFound from '../../../assets/img/img_not_found.png';
 
 // api
 import {filterAnime, filterManga, getPaginatedData} from '../../../api/kitsu';
@@ -64,17 +65,17 @@ class Search extends Component {
       const manga = await getPaginatedData(nextManga);
       let _state = this.state;
       _state.nextAnime = '';
-      // _state.nextManga = '';
-      // const newArray = [...anime.data.data, ...manga.data.data].sort(
-      //   () => Math.random() - 0.5,
-      // );
-      _state.listData = [...listData, ...anime.data.data];
+      _state.nextManga = '';
+      const newArray = [...anime.data.data, ...manga.data.data].sort(
+        () => Math.random() - 0.5,
+      );
+      _state.listData = [...listData, ...newArray];
       if (anime.data.links.hasOwnProperty('next')) {
         _state.nextAnime = anime.data.links.next;
       }
-      // if (manga.data.links.hasOwnProperty('next')) {
-      //   _state.nextAnime = manga.data.links.next;
-      // }
+      if (manga.data.links.hasOwnProperty('next')) {
+        _state.nextManga = manga.data.links.next;
+      }
       this.setState({_state});
     } catch (error) {
       console.log(error);
@@ -83,8 +84,16 @@ class Search extends Component {
 
   loadMoreData = () => {
     const {nextAnime, nextManga, listData} = this.state;
-    if (nextAnime && listData.length) {
+    if ((nextAnime || nextManga) && listData.length) {
       this.nextPageOfSectionData();
+    }
+  };
+
+  validateImage = image => {
+    if (image && image.hasOwnProperty('original')) {
+      return {uri: image.original};
+    } else {
+      return ImageNotFound;
     }
   };
 
@@ -105,7 +114,7 @@ class Search extends Component {
             searchValue={search}
           />
           {search === '' && listData.length === 0 && (
-            <View style={{alignItems: 'center', paddingTop: 40}}>
+            <View style={styles.containerTextSearch}>
               <Text style={styles.textSearch}>Type to search series</Text>
               <Icon
                 style={styles.iconStyle}
@@ -119,13 +128,14 @@ class Search extends Component {
             keyExtractor={i => i.id.toString()}
             initialNumToRender={40}
             extraData={this.state}
-            // onEndReached={() => this.loadMoreData()}
+            onEndReached={() => this.loadMoreData()}
             showsVerticalScrollIndicator={false}
             onEndReachedThreshold={0.8}
             data={listData}
             numColumns={3}
             renderItem={({item}) => (
               <CardItem
+                image={this.validateImage(item.attributes.posterImage)}
                 goToDetail={() => navigate('DetailData', {detail: item})}
                 data={item}
               />

@@ -1,21 +1,17 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {Container, Button, Footer, FooterTab, Icon} from 'native-base';
-import ContentLoader, {Rect} from 'react-content-loader/native';
+import {Container} from 'native-base';
 
 // custom
 import Header from '../../../components/header';
-import {
-  getFirstPageGenres,
-  getAnimes,
-  getPaginatedData,
-} from '../../../api/kitsu';
-
-// api
-import Genres from './Genres';
 import LoadingAnimation from '../../../components/loading_animation';
 import CustomFooter from '../../../components/custom_footer';
+import Genres from './Genres';
 import ErrorScreen from '../../../components/error_screen';
+
+// api
+import {getFirstPageGenres, getPaginatedData} from '../../../api/kitsu';
+
+// utils
 import verifyNetworkConnection from '../../../utils/verifyNetworkConnection';
 
 class Home extends Component {

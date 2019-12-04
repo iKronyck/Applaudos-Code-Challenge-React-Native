@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
-  Linking,
 } from 'react-native';
 import {Icon} from 'native-base';
 

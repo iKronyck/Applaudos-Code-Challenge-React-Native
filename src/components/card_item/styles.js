@@ -1,6 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import {resize} from '../../utils/styles';
-import colors from '../../utils/colors';
 
 const {width} = Dimensions.get('screen');
 const widthContainer = width / 3;

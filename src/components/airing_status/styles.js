@@ -12,10 +12,8 @@ export default StyleSheet.create({
     fontSize: resize(12),
     color: colors.white,
     flexDirection: 'row',
-    // width: resize(75),
   },
   textTBA: {
-    // width: resize(130),
     backgroundColor: colors.backgroundTBA,
   },
   textB: {

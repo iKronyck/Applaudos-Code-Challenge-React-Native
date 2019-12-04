@@ -64,3 +64,18 @@
 - Add filter to Favorites screen
 - Change header
 - Fix detail screen when showing a manga
+
+## [ADD, CHANGE, FIX] 2019-03-12 23:00
+
+- Add validation if the server is ON
+- Add validation if the user have connection with network
+- Add button to select anime or manga in feed screen
+- Add library to check Network status and support for gifs
+- Change image in Component card item
+- Change UI in feed
+- Change UI in Search
+- Fix list and hide list episodes for manga in Detail screen
+
+## [CHANGE] 2019-03-12 23:52
+
+- Review and clean code

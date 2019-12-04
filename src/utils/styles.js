@@ -1,6 +1,5 @@
 import {Dimensions, Platform} from 'react-native';
 
-//env
 import {WIDTH_DESING, HEIHGT_DESING} from '../../enviroment';
 
 export const {width, height} = Dimensions.get(
